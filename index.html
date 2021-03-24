@@ -1,28 +1,12 @@
 <html>
 <head>
-<title>Judging Pokemon</title>
-<link rel="stylesheet" href="css/monster.css" />
+<title>Bond Web Service Demo</title>
 <style>
 body {font-family:georgia;}
 </style>
 <script src="https://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+
 <script type="text/javascript">
-
-function serverSetup(server,cat){
-   server = server.toLowerCase();
-   let url = "";
-   if(server == "php"){//use web service
-       url = "api.php?cat=" + cat;
-   }else{//server is HTML only - simulate web service
-       if(cat == "box"){//box office
-           url = "data/pokemon-dex.js";
-       }else{//year
-           url = "data/favorite-mon.js"; 
-       }
-   }
-   return url;
-}
-
 $(document).ready(function() {  
 
 	$('.category').click(function(e){
@@ -35,69 +19,40 @@ $(document).ready(function() {
 
 function loadAJAX(cat)
 {
-   /* url can be run on a server running PHP or
-      use the a standard HTML server
- 
-      Indicate below if server is PHP or HTML
- 
-      let url = serverSetup("php",cat); //setup to run against PHP server
-      let url = serverSetup("html",cat); //setup to run against HTML server
-   */
-  
-   let url = serverSetup("html",cat);
-  
-   $.ajax({
-       type:"GET",
-       dataType: "json",
-       url:url,
-       success:bondJSON
-   });
+	//AJAX connection will go here
+    //alert('cat is: ' + cat);
+
+	$.ajax({
+		type:"GET",
+		dataType: "json",
+		url:"api.php?cat=" + cat,
+		success:bondJSON
+	});
+
+
+
 }
-
-
+    
 function toConsole(data)
 {//return data to console for JSON examination
 	console.log(data); //to view,use Chrome console, ctrl + shift + j
 }
 
 function bondJSON(data){
-	/*
-	JSON processing data goes here
+//JSON processing data goes here
 	toConsole(data);
-	$("#output").text(JSON.stringify*(data));
-	
-	clear the previous films
-	*/
-
-	$("#films").html("");
-
-	//write web service title
-	$("#filmtitle").html(data.title);
-
-	$.each(data.films, function(i,item){
-
-		let text = `
-			 	<b>Name</b>: ${item.Name}<br />
-				<b>Generation</b>: ${item.Generation}<br />
-				<b>PrimaryType</b>: ${item.PrimaryType}<br />
-				<b>SecondaryType</b>: ${item.SecondaryType}<br />
-				<b>Pokedex</b>: ${item.Pokedex}<br />
-				<b>Color</b>: ${item.Color}<br />
-				<div class="pic"><img src="thumbnails/${item.Image}" /></div>
-		`;
-		$("<div></div>").html(text).appendTo("#films");
-	});
 }
 
 </script>
 </head>
 	<body>
-	<h1>A Brief Overview Of My Childhood Pastime ... Pokemon!!!</h1>
-		<a href="year" class="category">Pokemon Sorted By My Own Bias</a><br />
-		<a href="box" class="category">Pokemon Sorted by Pokedex</a><br />
-		<h3 id="filmtitle">Pokemon Will Go Here</h3>
+	<h1>Bond Web Service</h1>
+		<a href="year" class="category">Bond Films By Year</a><br />
+		<a href="box" class="category">Bond Films By International Box Office Totals</a>
+		<h3 id="filmtitle">Title Will Go Here</h3>
 		<div id="films">
+			<p>Films will go here</p>
 		</div>
-		<div id="output">Results go here</div>	
+		<div id="output">Results go here</div>
 	</body>
 </html>
